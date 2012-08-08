@@ -1,0 +1,10 @@
+#!/bin/sh
+
+
+binning='binningHighStat=0.,10.,20.,30.,40.,50.,60.,70.,80.,90.,100.,110.,120.,130.,140.,150.,160.,170.,180.,190.,200.,210.,220.,230.,240.,250.,275.,300.,350. binningLowStat=0.,25.,50.,75.,100.,125,150.,175.,200.,250.,350.' 
+
+#binning='binningHighStat=0.,10.,20.,30.,40.,50.,60.,70.,80.,90.,100.,110.,120.,130.,140.,150.,160.,170.,180.,190.,200.,210.,220.,230.,240.,250.,275.,300.,350.,10000. binningLowStat=0.,25.,50.,75.,100.,125,150.,175.,200.,250.,350.,10000.' 
+
+
+
+MakeDataCard channel='eleTau'  shifts='Tau' dataFile='../inputs/etau/DATA.root' zttFile='../inputs/etau/ZJETS.root' zllFile='../inputs/etau/ZJETS.root' wFile='../inputs/etau/W.root' vvFile='../inputs/etau/VV.root' topFile='../inputs/etau/TOP.root' zEmbeddedSample='../inputs/etau/ZTT-EM.root' wThreeJetsFile='../inputs/etau/W3JETS.root'  preselection='HLT_Any&&vertices>0&&diLeptons==0&&lPfRelIsoDeltaBeta<0.1&tauLooseIsoDBPt>0&&abs(dz)<0.2&&WWMVA>0&&tauElectronMVAPass>0&&tauTrigger>0'       oswselection='charge==0&&mt1>70'	       ossignalselection='charge==0&&mt1<40'         sswselection='charge!=0&&mt1>70'	      sssignalselection='charge!=0&&mt1<40'  qcdselection='pt1>20&&HLT_Any&&vertices>0&&diLeptons==0&&lPfRelIsoDeltaBeta<0.5&&tauLooseIsoDBPt>0.&&charge!=0&&mt1<40'  luminosityErr=0.045 qcdfactor=1.07 qcdfactorErr=0.05 vvErr=0.3  zttScale=1.004 zttScaleErr=0.033    wFactorErr=0.06    zjfterr=0.1  zlfterr=0.1   topErr=0.075 	muID=0.0 muIDErr=0.00 eleID=1.00 eleIDErr=0.01 tauID=1.0 tauIDErr=0.064 outputFile='eleTauSM.root' dir='../inputs/etau/'  bID=0.94  bIDErr=0.10  bMisID=1.21  bMisIDErr=0.17    bitmask=0,0,1,0 $binning vbfSelection0='(nJetsPt30<1||(nJetsPt30==1&&highestJetPt<150))' vbfSelection1='(nJetsPt30>=1&&highestJetPt>150&&(!(nJetsPt30>=2&&vbfDEta>4&&vbfMass>400&&vbfNJetsGap30==0)))' vbfSelection2='(nJetsPt30>=2&&vbfDEta>4.0&&vbfMass>400&&vbfNJetsGap30==0)'   relaxedSelection='pt1>20&&mt1<40'    weight='(__WEIGHT__*__CORR__)' vbfFactorZ=1.14 vbfFactorZErr=0.032  vbfFactorW=1.14 vbfFactorWErr=0.05 boostFactorZ=0.893 boostFactorZErr=0.025 boostFactorW=0.95 boostFactorWErr=0.03 luminosity=4678.  zlftFactor=0.8  variable='sv_Mass' # scaleUp=1.1737
