@@ -86,7 +86,7 @@ void FindResonances::fill(const edm::Event& iEvent,const edm::EventSetup& iSetup
     using namespace edm;
     using namespace reco;
 
-
+	
 
     edm::Handle<reco::VertexCollection> vertexHandle;
     iEvent.getByLabel(srcVertices_, vertexHandle);
@@ -108,17 +108,24 @@ void FindResonances::fill(const edm::Event& iEvent,const edm::EventSetup& iSetup
         nTracksSV=-777;
 	
  
-	if(jetindex_<JETSIZE){
+	if(jetindex_<JETSIZE&&JETSIZE>0&&vertexHandle->size()>0){
+
 
 //      for(unsigned int  i=0;i!=cands->size();++i){
 
         pat::Jet jet = cands->at(jetindex_);
 
-                           const reco::SecondaryVertexTagInfo& secInfo = *jet.tagInfoSecondaryVertex("secondaryVertex");
+        if(verbose_) cout<<"Reading Jet: "<<jet.pt()<<endl;
 
+                           const reco::SecondaryVertexTagInfo& secInfo = *jet.tagInfoSecondaryVertex("secondaryVertex");
+	if(verbose_) {cout<<"Got SV! "<<endl;
+	cout<<"Really?"<< secInfo.nVertices()<<endl;
+	}
                  if (secInfo.nVertices() >= 1) {
+	        if(verbose_) cout<<"Check SV!"<<endl;
 
               const reco::Vertex &sv = secInfo.secondaryVertex(0);
+	      if(verbose_) cout<<"SV 0 "<<endl;	
               // the precomputed direction with respect to the primary vertex
               GlobalVector dir = secInfo.flightDirection(0);
               // unfortunately CMSSW hsa all kinds of vectors,
@@ -213,6 +220,7 @@ void FindResonances::fill(const edm::Event& iEvent,const edm::EventSetup& iSetup
 
                for(reco::Vertex::trackRef_iterator track = vertexHandle->at(0).tracks_begin();
                     track != vertexHandle->at(0).tracks_end(); ++track) {
+			if((*track)->pt()<0.5) continue;
                        float angle=sqrt( (dir.x()-(*track)->px())*(dir.x()-(*track)->px())+(dir.y()-(*track)->py())*(dir.y()-(*track)->py())+(dir.z()-(*track)->pz())*(dir.z()-(*track)->pz()));
                          if(angle<angleMIN) {angleMIN=angle; pion=track;}
                 }
@@ -226,10 +234,16 @@ void FindResonances::fill(const edm::Event& iEvent,const edm::EventSetup& iSetup
                         pionVEC.SetPz((*pion)->pz());
                         pionVEC.SetM(mass_pion);      // pion mass
                         trackFourVectorSum_D0Star += pionVEC;
-
+			cout<<"CHECK D0:"<<endl;
+			cout<<pionVEC.M()<<" = ? "<<trackFourVectorSum_D0Star.M()<<endl;
 
 			if((*pion)->charge()>0) trackFourVectorSum_D0Star+=trackFourVectorSum_D0_KM; 
 			else if( (*pion)->charge()<0 ) trackFourVectorSum_D0Star+=trackFourVectorSum_D0_KP;
+			cout<<"Added D0? "<<endl;
+			cout<<(*pion)->charge()<<" "<<trackFourVectorSum_D0_KM.M()<<"  "<<trackFourVectorSum_D0_KP.M()<<endl;
+			cout<<"---->"<<trackFourVectorSum_D0Star.M()<<endl;
+
+		
 
 			// D*(+-)->pion(+-) D0, with D0->kaon(-+) pion(+-)  	
 			// Juan:
@@ -250,8 +264,12 @@ void FindResonances::fill(const edm::Event& iEvent,const edm::EventSetup& iSetup
                         cout<<"3 Tracks Things: "<<vertexMass<<"    DPM: "<<vertexMass_DPM<<endl;
 		}					
 
+
+	
+
    }}
 
+	        if(verbose_) cout<<"Finished!: "<<endl;
 
 
 }

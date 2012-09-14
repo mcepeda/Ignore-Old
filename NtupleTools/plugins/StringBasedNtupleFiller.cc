@@ -1,6 +1,7 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "UWAnalysis/NtupleTools/plugins/StringBasedNtupleFiller.h"
 
+DEFINE_EDM_PLUGIN(NtupleFillerFactory, SimBHadronsFiller, "SimBHadronsFiller");
 DEFINE_EDM_PLUGIN(NtupleFillerFactory, PATMuTauPairFiller, "PATMuTauPairFiller");
 DEFINE_EDM_PLUGIN(NtupleFillerFactory, PATGenParticleFiller, "PATGenParticleFiller");
 DEFINE_EDM_PLUGIN(NtupleFillerFactory, PATMuJetPairFiller, "PATMuJetPairFiller");
@@ -36,6 +37,6 @@ DEFINE_EDM_PLUGIN(NtupleFillerFactory, PATEleEleEleEleQuadFiller, "PATEleEleEleE
 DEFINE_EDM_PLUGIN(NtupleFillerFactory, PATEleEleMuMuQuadFiller, "PATEleEleMuMuQuadFiller");
 DEFINE_EDM_PLUGIN(NtupleFillerFactory, PATMuNuJetJetQuadFiller, "PATMuNuJetJetQuadFiller");
 DEFINE_EDM_PLUGIN(NtupleFillerFactory, PATEleNuJetJetQuadFiller, "PATEleNuJetJetQuadFiller");
-DEFINE_EDM_PLUGIN(NtupleFillerFactory, PATTauNuJetJetQuadFiller, "PATTauNuJetJetQuadFiller");
+//DEFINE_EDM_PLUGIN(NtupleFillerFactory, PATTauNuJetJetQuadFiller, "PATTauNuJetJetQuadFiller");
 
 

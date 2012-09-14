@@ -4,7 +4,6 @@
 // user include files
 #include "DataFormats/Candidate/interface/Candidate.h"
 #include <TTree.h>
-
 #include "UWAnalysis/NtupleTools/interface/NtupleFillerBase.h"
 
 //
@@ -39,6 +38,7 @@ class CollectionSizeFiller : public NtupleFillerBase {
     if(iEvent.getByLabel(src_,handle)) {
       value = handle->size();
     }
+
   }
   
 

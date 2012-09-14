@@ -1,0 +1,218 @@
+// system include files
+#include <memory>
+
+// user include files
+#include "DataFormats/Candidate/interface/Candidate.h"
+#include <TTree.h>
+#include "UWAnalysis/NtupleTools/interface/NtupleFillerBase.h"
+#include "FWCore/MessageLogger/interface/MessageLogger.h"
+#include "UWAnalysis/RecoTools/plugins/PATSSVJetEmbedder.h"
+
+#include "FWCore/Framework/interface/Frameworkfwd.h"
+#include "FWCore/Framework/interface/EDProducer.h"
+#include "FWCore/Framework/interface/Event.h"
+#include "FWCore/Framework/interface/MakerMacros.h"
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "DataFormats/PatCandidates/interface/Jet.h"
+#include "DataFormats/BTauReco/interface/TrackIPTagInfo.h"
+#include "DataFormats/TrackReco/interface/Track.h"
+#include "DataFormats/TrackReco/interface/TrackBase.h"
+#include "DataFormats/TrackReco/interface/TrackFwd.h"
+#include "DataFormats/VertexReco/interface/Vertex.h"
+#include "DataFormats/VertexReco/interface/VertexFwd.h"
+
+#include "Math/GenVector/VectorUtil.h"
+
+
+class FindResonances : public NtupleFillerBase {
+ public:
+
+    FindResonances(){
+    }
+
+    FindResonances(const edm::ParameterSet& iConfig, TTree* t):
+    verbose_(iConfig.getUntrackedParameter<bool>("verbose",false)),
+    src_(iConfig.getParameter<edm::InputTag>("src")),
+    srcVertices_(iConfig.getParameter<edm::InputTag>("srcPrimaryVertices"))
+	{
+//	   infoNUP=-1;
+//            t->Branch("infoNUP",&infoNUP,"infoNUP/F");
+//            t->Branch("CCandsPhi","std::vector<double>",&CCandsPhi);
+	}
+      
+      ~FindResonances()
+	{ 
+	  
+	}
+      
+
+  void fill(const edm::Event& iEvent,const edm::EventSetup& iSetup);
+
+
+ protected:
+  bool verbose_;
+  edm::InputTag src_;
+  edm::InputTag srcVertices_;
+
+//       std::vector<int> *CMother2Status;           std::vector<int> *BMother2Status;
+//       float   infoNUP;
+
+
+
+};
+
+
+void FindResonances::fill(const edm::Event& iEvent,const edm::EventSetup& iSetup){
+    using namespace std; 
+    using namespace edm;
+    using namespace reco;
+
+
+
+    edm::Handle<reco::VertexCollection> vertexHandle;
+    iEvent.getByLabel(srcVertices_, vertexHandle);
+
+
+   // get GeneralTracks collection
+ 
+   Handle< reco::TrackCollection>  trackCollectionHandle;
+   bool gentracksinpatuple=false;
+
+   if(iEvent.getByLabel("generalTracks",trackCollectionHandle))  gentracksinpatuple=true;    
+
+    std::auto_ptr<pat::JetCollection > out(new pat::JetCollection);
+    edm::Handle<pat::JetCollection > cands;
+
+    if(iEvent.getByLabel(src_,cands))
+      for(unsigned int  i=0;i!=cands->size();++i){
+        pat::Jet jet = cands->at(i);
+
+	if((jet.userFloat("nSSV")+jet.userFloat("nNegativeSSV"))<=0) continue;
+
+	  if(jet.userFloat("mass_SSV")>0){
+		
+			double pxALL=0, pyALL=0, pzALL=0;
+		
+		
+
+			double p1=sqrt(jet.userFloat("SSV_track1_px")*jet.userFloat("SSV_track1_px")+jet.userFloat("SSV_track1_py")*jet.userFloat("SSV_track1_py")+jet.userFloat("SSV_track1_pz")*jet.userFloat("SSV_track1_pz"));
+                        double p2=sqrt(jet.userFloat("SSV_track2_px")*jet.userFloat("SSV_track2_px")+jet.userFloat("SSV_track2_py")*jet.userFloat("SSV_track2_py")+jet.userFloat("SSV_track2_pz")*jet.userFloat("SSV_track2_pz"));
+                        double p3=sqrt(jet.userFloat("SSV_track3_px")*jet.userFloat("SSV_track3_px")+jet.userFloat("SSV_track3_py")*jet.userFloat("SSV_track3_py")+jet.userFloat("SSV_track3_pz")*jet.userFloat("SSV_track3_pz"));
+
+			double mass_pion=0.13957;    double     mass_kaon=0.493677;
+
+		// recompute mass with 2 and 3 tracks, for checks:
+	
+			if(jet.userFloat("nTracksSSV")==2){
+                          pxALL=jet.userFloat("SSV_track1_px")+jet.userFloat("SSV_track2_px");
+                          pyALL=jet.userFloat("SSV_track1_py")+jet.userFloat("SSV_track2_py");
+                          pzALL=jet.userFloat("SSV_track1_pz")+jet.userFloat("SSV_track2_pz");
+			}
+			else if(jet.userFloat("nTracksSSV")==3){
+			  pxALL=jet.userFloat("SSV_track1_px")+jet.userFloat("SSV_track2_px")+jet.userFloat("SSV_track3_px");
+                          pyALL=jet.userFloat("SSV_track1_py")+jet.userFloat("SSV_track2_py")+jet.userFloat("SSV_track3_py");
+                          pzALL=jet.userFloat("SSV_track1_pz")+jet.userFloat("SSV_track2_pz")+jet.userFloat("SSV_track3_pz");
+			}
+
+			double pALL_square=pxALL*pxALL+pyALL*pyALL+pzALL*pzALL;
+
+		// now do the mass combinations. Carefully this time:
+
+			double mass_2tracks_pions=0, mass_D0=0, mass_D0_2=0, mass_3tracks_pions=0, mass_kapipi=0;
+	                double en_2tracks_pions=0, en_3tracks_pions=0, en_D0=0, en_D0_2=0, en_3tracks_kapipi;
+
+			if(jet.userFloat("nTracksSSV")==2){  
+			  // Just pions 
+		          en_2tracks_pions=sqrt(p1*p1+mass_pion*mass_pion)+sqrt(p2*p2+mass_pion*mass_pion);	
+			  mass_2tracks_pions=en_2tracks_pions*en_2tracks_pions-pALL_square;
+			  mass_2tracks_pions=en_2tracks_pions*en_2tracks_pions-pALL_square;
+                                mass_2tracks_pions=(mass_2tracks_pions>0)?sqrt(mass_2tracks_pions):0;
+			
+			  // pion-kaon:
+			  en_D0=sqrt(p1*p1+mass_pion*mass_pion)+sqrt(p2*p2+mass_kaon*mass_kaon); 
+                          en_D0_2=sqrt(p2*p2+mass_pion*mass_pion)+sqrt(p1*p1+mass_kaon*mass_kaon);
+			  mass_D0=en_D0*en_D0-pALL_square;
+				mass_D0=(mass_D0>0)?sqrt(mass_D0):0;
+                          mass_D0_2=en_D0_2*en_D0_2-pALL_square;
+                                mass_D0_2=(mass_D0_2>0)?sqrt(mass_D0_2):0;
+			}
+
+			if(jet.userFloat("nTracksSSV")==3){
+                          // Just pions 
+                          en_3tracks_pions=sqrt(p1*p1+mass_pion*mass_pion)+sqrt(p2*p2+mass_pion*mass_pion)+sqrt(p3*p3+mass_pion*mass_pion);
+                          mass_3tracks_pions=en_3tracks_pions*en_3tracks_pions-pALL_square;
+                          mass_3tracks_pions=en_3tracks_pions*en_3tracks_pions-pALL_square;
+                                mass_3tracks_pions=(mass_3tracks_pions>0)?sqrt(mass_3tracks_pions):0;
+
+
+			// pi-pi-k+ or pi+pi+k-
+			  if(jet.userFloat("SSV_track1_charge")!=jet.userFloat("chargeSSV")) 
+					en_3tracks_kapipi=sqrt(p1*p1+mass_kaon*mass_kaon)+sqrt(p2*p2+mass_pion*mass_pion)+sqrt(p3*p3+mass_pion*mass_pion); 
+                          if(jet.userFloat("SSV_track2_charge")!=jet.userFloat("chargeSSV"))   
+                                        en_3tracks_kapipi=sqrt(p2*p2+mass_kaon*mass_kaon)+sqrt(p1*p1+mass_pion*mass_pion)+sqrt(p3*p3+mass_pion*mass_pion);
+                          if(jet.userFloat("SSV_track3_charge")!=jet.userFloat("chargeSSV"))   
+                                        en_3tracks_kapipi=sqrt(p3*p3+mass_kaon*mass_kaon)+sqrt(p1*p1+mass_pion*mass_pion)+sqrt(p2*p2+mass_pion*mass_pion);
+			  mass_kapipi=en_3tracks_kapipi*en_3tracks_kapipi-pALL_square;
+				mass_kapipi=(mass_kapipi>0)?sqrt(mass_kapipi):0;
+
+			}
+
+		if(verbose_){
+			cout<<"MASS:  "<<jet.userFloat("mass_SSV")<<"     nTracks:  "<<jet.userFloat("nTracksSSV")<<endl;
+			cout<<"2 Tracks Things: "<<mass_2tracks_pions<<"    D0: "<<mass_D0<<"   D02: "<<mass_D0_2<<endl;
+                        cout<<"3 Tracks Things: "<<mass_3tracks_pions<<"    DPM: "<<mass_kapipi;
+		}					
+
+		            const reco::SecondaryVertexTagInfo& secInfo = *jet.tagInfoSecondaryVertex("secondaryVertex");
+							const reco::Vertex &sv = secInfo.secondaryVertex(0);
+							cout<<"FOUND-->D"<<sv.x()<<"  " <<sv.y()<<sv.z()<<endl;
+							
+					                 // the precomputed direction with respect to the primary vertex
+					                 GlobalVector dir = secInfo.flightDirection(0);
+ 
+					                 // unfortunately CMSSW hsa all kinds of vectors,
+					                 // and sometimes we need to convert them *sigh*
+					                 math::XYZVector dir2(dir.x(), dir.y(), dir.z());
+
+	
+
+                // compute the invariant mass from a four-vector sum
+                math::XYZTLorentzVector trackFourVectorSum;
+
+                // loop over all tracks in the vertex
+                for(reco::Vertex::trackRef_iterator track = sv.tracks_begin();
+                    track != sv.tracks_end(); ++track) {
+                        ROOT::Math::LorentzVector<ROOT::Math::PxPyPzM4D<double> > vec;
+                        vec.SetPx((*track)->px());
+                        vec.SetPy((*track)->py());
+                        vec.SetPz((*track)->pz());
+                        vec.SetM(0.13957);      // pion mass
+                        trackFourVectorSum += vec;
+                }
+
+                // get the invariant mass: sqrt(EÂ² - pxÂ² - pyÂ² - pzÂ²)
+                double vertexMass = trackFourVectorSum.M();
+
+		cout<<"REDO!!!!:    "<<vertexMass<<endl;
+
+		cout<<"PV : "<<vertexHandle->at(0).position().x()<<endl;
+                        double angleMIN=9999999;
+
+               for(reco::Vertex::trackRef_iterator track = vertexHandle->at(0).tracks_begin();
+                    track != vertexHandle->at(0).tracks_end(); ++track) {
+			if((*track)->px()==jet.userFloat("SSV_track1_px") || (*track)->px()==jet.userFloat("SSV_track2_px") || (*track)->px()==jet.userFloat("SSV_track3_px")) continue;
+			double angle=sqrt( (dir.x()-(*track)->px())*(dir.x()-(*track)->px())+(dir.y()-(*track)->py())*(dir.y()-(*track)->py())+(dir.z()-(*track)->pz())*(dir.z()-(*track)->pz()));
+			 if(angle<angleMIN) angleMIN=angle;
+                }
+			cout<<angleMIN<<endl;
+
+
+   }} 
+
+}
+#include "FWCore/Framework/interface/MakerMacros.h"
+DEFINE_EDM_PLUGIN(NtupleFillerFactory, FindResonances, "FindResonances");
+
+
+
+

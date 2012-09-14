@@ -91,6 +91,9 @@ class StringBasedNtupleFiller : public NtupleFillerBase {
 #include "UWAnalysis/DataFormats/interface/CompositePtrCandidateTMEt.h"
 #include "DataFormats/METReco/interface/PFMET.h"
 #include "DataFormats/METReco/interface/GenMET.h"
+#include "ZSV/BAnalysis/interface/SimBHadron.h"
+
+typedef StringBasedNtupleFiller<SimBHadron> SimBHadronsFiller;
 typedef StringBasedNtupleFiller<reco::GenParticle> PATGenParticleFiller;
 typedef StringBasedNtupleFiller<PATMuTauPair> PATMuTauPairFiller;
 typedef StringBasedNtupleFiller<PATMuJetPair> PATMuJetPairFiller;
@@ -126,5 +129,4 @@ typedef StringBasedNtupleFiller<PATEleEleEleEleQuad> PATEleEleEleEleQuadFiller;
 typedef StringBasedNtupleFiller<PATEleEleMuMuQuad> PATEleEleMuMuQuadFiller;
 typedef StringBasedNtupleFiller<PATEleNuJetJetQuad> PATEleNuJetJetQuadFiller;
 typedef StringBasedNtupleFiller<PATMuNuJetJetQuad> PATMuNuJetJetQuadFiller;
-typedef StringBasedNtupleFiller<PATTauNuJetJetQuad> PATTauNuJetJetQuadFiller;
 

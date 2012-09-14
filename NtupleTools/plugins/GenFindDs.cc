@@ -13,13 +13,13 @@
 // Stuff for gen level ID (based on a W analysis...)
 
 
-class GenID2 : public NtupleFillerBase {
+class GenFindDs : public NtupleFillerBase {
  public:
 
-    GenID2(){
+    GenFindDs(){
     }
 
-    GenID2(const edm::ParameterSet& iConfig, TTree* t):
+    GenFindDs(const edm::ParameterSet& iConfig, TTree* t):
     verbose_(iConfig.getUntrackedParameter<bool>("verbose",false)),
     saveCs_(iConfig.getUntrackedParameter<bool>("saveCs",false)),
     saveBs_(iConfig.getUntrackedParameter<bool>("saveBs",false)),
@@ -130,7 +130,7 @@ class GenID2 : public NtupleFillerBase {
 
 	}
       
-      ~GenID2()
+      ~GenFindDs()
 	{ 
 	  
 	}
@@ -181,7 +181,7 @@ class GenID2 : public NtupleFillerBase {
 };
 
 
-void GenID2::fill(const edm::Event& iEvent,const edm::EventSetup& iSetup){
+void GenFindDs::fill(const edm::Event& iEvent,const edm::EventSetup& iSetup){
     using namespace std; 
 
             CCandsPt->clear();                   BCandsPt->clear();
@@ -340,7 +340,7 @@ void GenID2::fill(const edm::Event& iEvent,const edm::EventSetup& iSetup){
 
 }
 #include "FWCore/Framework/interface/MakerMacros.h"
-DEFINE_EDM_PLUGIN(NtupleFillerFactory, GenID2, "GenID2");
+DEFINE_EDM_PLUGIN(NtupleFillerFactory, GenFindDs, "GenFindDs");
 
 
 
