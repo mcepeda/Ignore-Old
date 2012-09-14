@@ -30,7 +30,7 @@
 <bin   name="EventWeightsIterative" file="EventWeightsIterative.cc">
 </bin>
 
-<bin   name="EventWeightsIterativeV2" file="EventWeightsIterativeV2.cc">
+<bin   name="EventWeightsIterativeALL" file="EventWeightsIterativeALL.cc">
 </bin>
 
 <bin   name="EventWeightsKFactors" file="EventWeightsKFactors.cc">
@@ -38,6 +38,10 @@
 
 <bin   name="EventWeightsEffNew" file="EventWeightsEffNew.cc">
 </bin>
+
+<bin   name="EventWeightsEffNewELE" file="EventWeightsEffNewELE.cc">
+</bin>
+
 
 <bin   name="EventWeightsFromHisto" file="EventWeightsFromHisto.cc">
 </bin>
