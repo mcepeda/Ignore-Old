@@ -89,8 +89,30 @@ def defaultTriggerOnlySKIM(process,triggerProcess = 'HLT',triggerPaths = ['HLT_M
 
   process.createPV=cms.Path(process.primaryVertexFilter)
 
+  process.vetoPatElectrons10 = cms.EDFilter("PATElectronSelector",
+    src = cms.InputTag("convRejElectrons"),
+    cut = cms.string("pt>10&&abs(eta)<2.5&&userFloat('wp95')==1&&(chargedHadronIso()+max(photonIso()+neutralHadronIso()-0.5*userIso(0),0.0))/pt()<0.2")
+  )
 
-def defaultConfCommonPatuples(process,triggerProcess = 'HLT',triggerPaths = ['HLT_Mu9','HLT_Mu11_PFTau15_v1','HLT_Mu11_PFTau15_v1','HLT_Mu11_PFTau15_v2','HLT_Mu15_v1','HLT_Mu15_v2']):
+  process.vetoPatElectrons20 = cms.EDFilter("PATElectronSelector",
+    src = cms.InputTag("convRejElectrons"),
+    cut = cms.string("pt>20&&abs(eta)<2.5&&userFloat('wp95')==1&&(chargedHadronIso()+max(photonIso()+neutralHadronIso()-0.5*userIso(0),0.0))/pt()<0.2")
+  )
+
+  process.vetoPatMuons10 = cms.EDFilter("PATMuonSelector",
+    src = cms.InputTag("patMuonsForAnalysis"),
+    cut = cms.string("pt>10&&isGlobalMuon&&isTrackerMuon&&(chargedHadronIso()+max(photonIso()+neutralHadronIso()-0.5*userIso(0),0.0))/pt()<0.2")
+  )
+  process.vetoPatMuons20 = cms.EDFilter("PATMuonSelector",
+    src = cms.InputTag("patMuonsForAnalysis"),
+    cut = cms.string("pt>20&&isGlobalMuon&&isTrackerMuon&&(chargedHadronIso()+max(photonIso()+neutralHadronIso()-0.5*userIso(0),0.0))/pt()<0.2")
+  )
+
+
+  process.addVetoLeptons=cms.Path(process.vetoPatElectrons10*process.vetoPatElectrons20*process.vetoPatMuons10*process.vetoPatMuons20)
+
+
+def defaultConfCommonPatuples(process,mode="MC",triggerProcess = 'HLT',triggerPaths = ['HLT_Mu9','HLT_Mu11_PFTau15_v1','HLT_Mu11_PFTau15_v1','HLT_Mu11_PFTau15_v2','HLT_Mu15_v1','HLT_Mu15_v2']):
   process.load("UWAnalysis.Configuration.startUpSequence_cff")
   process.load("Configuration.StandardSequences.Geometry_cff")
   process.load("Configuration.StandardSequences.MagneticField_cff")
@@ -163,7 +185,58 @@ def defaultConfCommonPatuples(process,triggerProcess = 'HLT',triggerPaths = ['HL
 
   process.addVetoElectrons=cms.Path(process.vetoPatElectrons10*process.vetoPatElectrons20) 	 
 
+  if mode=="MC":
+	 process.bhadrons = cms.EDProducer('MCBHadronProducer',
+                                  quarkId = cms.uint32(5)
+                                  )
 
+
+	 process.cbarCands=cms.EDProducer(
+	      "GenParticlePruner",
+	      src = cms.InputTag("genParticles"),
+	      select = cms.vstring(
+                           "keep pdgId = -4",
+	      )
+	 )
+
+	 process.cCands=cms.EDProducer(
+	      "GenParticlePruner",
+	      src = cms.InputTag("genParticles"),
+	      select = cms.vstring(
+ 	                          "keep pdgId= 4 ",
+	      )
+	 )
+
+	 process.genDaughters = cms.EDProducer(
+	      "GenParticlePruner",
+	      src = cms.InputTag("genParticles"),
+	      select = cms.vstring(
+                           "keep++ pdgId = {W+}",
+                           "drop pdgId = {W+} & status = 2",
+                           "drop pdgId = {W+} & status = 2",
+                           "keep++ pdgId = {W-}",
+                           "drop pdgId = {W-} & status = 2",
+                           "drop pdgId = {W-} & status = 2",
+                           "keep pdgId = {mu+}",
+                           "keep pdgId = {nu_mu}",
+                           "keep pdgId = {mu-}",
+                           "keep pdgId = {e+}",
+                           "keep pdgId = {e-}",
+                           "keep pdgId = {nu_e}",
+                           "keep pdgId = {tau+}",
+                           "keep pdgId = {tau-}",
+                           "keep pdgId = {nu_tau}",
+                           "keep abs(pdgId) = 1",
+                           "keep abs(pdgId) = 2",
+                           "keep abs(pdgId) = 3",
+                           "keep abs(pdgId) = 4",
+                           "keep abs(pdgId) = 5",
+                           "keep abs(pdgId) = 6",
+                           "keep pdgId = 21",
+     	  )
+ 	 )
+
+         process.createSimCollections=cms.Path(process.bhadrons*process.cbarCands*process.cCands*process.genDaughters)
 
 
 def defaultReconstruction(process,triggerProcess = 'HLT',triggerPaths = ['HLT_Mu9','HLT_Mu11_PFTau15_v1','HLT_Mu11_PFTau15_v1','HLT_Mu11_PFTau15_v2','HLT_Mu15_v1','HLT_Mu15_v2']):

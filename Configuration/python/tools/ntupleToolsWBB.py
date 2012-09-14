@@ -474,6 +474,22 @@ def addMuNuJetJetEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSorte
                                     leadingOnly=cms.untracked.bool(True)
                               ),
 
+                              jetBTagSSVCharge1 = cms.PSet(
+                                    pluginType = cms.string("PATJetPairFiller"),
+                                    src        = cms.InputTag(srcDiJets),
+                                    tag        = cms.string("jet1BTag_SSVCharge"),
+                                    method     = cms.string('leg1.userFloat("chargeSSV")'),
+                                    leadingOnly=cms.untracked.bool(True)
+                              ),
+                              jetBTagSSVCharge2 = cms.PSet(
+                                    pluginType = cms.string("PATJetPairFiller"),
+                                    src        = cms.InputTag(srcDiJets),
+                                    tag        = cms.string("jet2BTag_SSVCharge"),
+                                    method     = cms.string('leg2.userFloat("chargeSSV")'),
+                                    leadingOnly=cms.untracked.bool(True)
+                              ),
+
+
 			       # Flight Distance (associated to the SSV algo)
 
                               jetBTagFlightDistance1 = cms.PSet(
@@ -543,14 +559,14 @@ def addMuNuJetJetEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSorte
                                     pluginType = cms.string("PATJetPairFiller"),
                                     src        = cms.InputTag(srcDiJets),
                                     tag        = cms.string("jet1NumberOfSSV"),
-                                    method     = cms.string("leg1.userFloat('nSSV')"),
+                                    method     = cms.string("leg1.userFloat('nNegativeSSV')"),   # this is a stupid bug, the neg is the pos and viceversa
                                     leadingOnly=cms.untracked.bool(True)
                               ),
                               jetBTagNSV2 = cms.PSet(
                                     pluginType = cms.string("PATJetPairFiller"),
                                     src        = cms.InputTag(srcDiJets),
                                     tag        = cms.string("jet2NumberOfSSV"),
-                                    method     = cms.string("leg2.userFloat('nSSV')"),
+                                    method     = cms.string("leg2.userFloat('nNegativeSSV')"),
                                     leadingOnly=cms.untracked.bool(True)
                               ),
 
@@ -569,6 +585,7 @@ def addMuNuJetJetEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSorte
                                     method     = cms.string("leg2.userFloat('btagNEGSSVHE')"),
                                     leadingOnly=cms.untracked.bool(True)
                               ),
+
                               jetBTagNegFlightDistance1 = cms.PSet(
                                     pluginType = cms.string("PATJetPairFiller"),
                                     src        = cms.InputTag(srcDiJets),
@@ -677,14 +694,12 @@ def addMuNuJetJetEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSorte
                         ),
 
 
-
-                             genID3=cms.PSet(
-                                  pluginType = cms.string("PartonJetID"),
-                                  src        = cms.InputTag("ak5PartonJets"),
-                                  ptMin      = cms.double(10),
-                                  etaMax     = cms.double(2.5)
-                                ),
-
+#                             genID3=cms.PSet(
+#                                  pluginType = cms.string("PartonJetID"),
+#                                  src        = cms.InputTag("ak5PartonJets"),
+#                                  ptMin      = cms.double(10),
+#                                  etaMax     = cms.double(2.5)
+#                                ),
 
 
                               eleSize = cms.PSet(
@@ -859,6 +874,116 @@ def addMuNuJetJetEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSorte
                                   leadingOnly=cms.untracked.bool(True)
                               ),
 
+		 	     simBHadrons = cms.PSet(
+                                    pluginType = cms.string("SimBHadronsFiller"),
+                                    src        = cms.InputTag("bhadrons"),
+                                    tag        = cms.string("bHadronsID"),
+				    method     = cms.string("pdgId()"),
+				    leadingOnly=cms.untracked.bool(False)	
+                              ),
+
+                             simBHadronsPT = cms.PSet(
+                                    pluginType = cms.string("SimBHadronsFiller"),
+                                    src        = cms.InputTag("bhadrons"),
+                                    tag        = cms.string("bHadronsPT"),
+                                    method     = cms.string("pt()"),
+                                    leadingOnly=cms.untracked.bool(False)
+                              ),
+
+                             simBHadronsETA = cms.PSet(
+                                    pluginType = cms.string("SimBHadronsFiller"),
+                                    src        = cms.InputTag("bhadrons"),
+                                    tag        = cms.string("bHadronsETA"),
+                                    method     = cms.string("eta()"),
+                                    leadingOnly=cms.untracked.bool(False)
+                              ),
+
+                             simBHadronsPHI = cms.PSet(
+                                    pluginType = cms.string("SimBHadronsFiller"),
+                                    src        = cms.InputTag("bhadrons"),
+                                    tag        = cms.string("bHadronsPHI"),
+                                    method     = cms.string("phi()"),
+                                    leadingOnly=cms.untracked.bool(False)
+                              ),
+
+
+
+                             simBHadronsSIZE = cms.PSet(
+                                    pluginType = cms.string("CollectionSizeFiller"),
+                                    src        = cms.InputTag("bhadrons"),
+                                    tag        = cms.string("bHadronsSIZE"),
+                              ),
+
+
+                             cSIZE2= cms.PSet(
+                                    pluginType = cms.string("CollectionSizeFiller"),
+                                    src        = cms.InputTag("cbarCands"),
+                                    tag        = cms.string("cbarCandsSIZE"),
+                              ),
+
+
+                             cSIZE = cms.PSet(
+                                    pluginType = cms.string("CollectionSizeFiller"),
+                                    src        = cms.InputTag("cCands"),
+                                    tag        = cms.string("cCandsSIZE"),
+                              ),
+
+                             cstatus = cms.PSet(
+                                    pluginType = cms.string("PATGenParticleFiller"),
+                                    src        = cms.InputTag("cCands"),
+                                    tag        = cms.string("cCandsStatus"),
+                                    method     = cms.string("status()"),
+                                    leadingOnly=cms.untracked.bool(False)
+                              ),
+                             cbarStatus2 = cms.PSet(
+                                    pluginType = cms.string("PATGenParticleFiller"),
+                                    src        = cms.InputTag("cbarCands"),
+                                    tag        = cms.string("cbarCandsStatus"),
+                                    method     = cms.string("status()"),
+                                    leadingOnly=cms.untracked.bool(False)
+                              ),
+                             cPT = cms.PSet(
+                                    pluginType = cms.string("PATGenParticleFiller"),
+                                    src        = cms.InputTag("cCands"),
+                                    tag        = cms.string("cCandsPT"),
+                                    method     = cms.string("pt()"),
+                                    leadingOnly=cms.untracked.bool(False)
+                              ),
+                             cbarPT2 = cms.PSet(
+                                    pluginType = cms.string("PATGenParticleFiller"),
+                                    src        = cms.InputTag("cbarCands"),
+                                    tag        = cms.string("cbarCandsPT"),
+                                    method     = cms.string("pt()"),
+                                    leadingOnly=cms.untracked.bool(False)
+                              ),
+                             cPHI = cms.PSet(
+                                    pluginType = cms.string("PATGenParticleFiller"),
+                                    src        = cms.InputTag("cCands"),
+                                    tag        = cms.string("cCandsPHI"),
+                                    method     = cms.string("phi()"),
+                                    leadingOnly=cms.untracked.bool(False)
+                              ),
+                             cbarPHI2 = cms.PSet(
+                                    pluginType = cms.string("PATGenParticleFiller"),
+                                    src        = cms.InputTag("cbarCands"),
+                                    tag        = cms.string("cbarCandsPHI"),
+                                    method     = cms.string("phi()"),
+                                    leadingOnly=cms.untracked.bool(False)
+                              ),
+                             cETA = cms.PSet(
+                                    pluginType = cms.string("PATGenParticleFiller"),
+                                    src        = cms.InputTag("cCands"),
+                                    tag        = cms.string("cCandsETA"),
+                                    method     = cms.string("eta()"),
+                                    leadingOnly=cms.untracked.bool(False)
+                              ),
+                             cbarETA2 = cms.PSet(
+                                    pluginType = cms.string("PATGenParticleFiller"),
+                                    src        = cms.InputTag("cbarCands"),
+                                    tag        = cms.string("cbarCandsETA"),
+                                    method     = cms.string("eta()"),
+                                    leadingOnly=cms.untracked.bool(False)
+                              ),
 
 
    )
@@ -866,5 +991,6 @@ def addMuNuJetJetEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSorte
    setattr(process, name, eventTree)
    p = cms.Path(getattr(process,name))
    setattr(process, name+'Path', p)
+
 
 

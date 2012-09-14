@@ -30,17 +30,17 @@ MNJanalysisConfigurator = CutSequenceProducer(initialCounter  = 'initialEventsMN
 
 
 #Make Di Muons to VETO DY
-#MNJanalysisConfigurator.addDiCandidateModule('diMuons','PATMuPairProducer', 'cleanPatMuons','cleanPatMuons','systematicsMET','cleanPatJets',0,9999,text = '',dR=0.5,recoMode = "")
+#MNJanalysisConfigurator.addDiCandidateModule('diMuons','PATMuPairProducer', 'cleanPatMuons','cleanPatMuons','systematicsMET','patJetsForAnalysis',0,9999,text = '',dR=0.5,recoMode = "")
 #MNJanalysisConfigurator.addSelector('diMuonsSel','PATMuPairSelector',DiMuonPreSel+'&&'+DiMuonPreSel2+'&&'+DiMuonPreSel3,'diMuonSel',0,999)
 #MNJanalysisConfigurator.addSorter('diMuonsSorted','PATMuPairSorter')
 
 #Make Muons+MET
-MNJanalysisConfigurator.addCandidateMETModule('wCands','PATMuonNuPairProducer','cleanPatMuons','systematicsMET','cleanPatJets',1,9999,'AtLeastOneWCandidate',genParticles="genDaughters")
+MNJanalysisConfigurator.addCandidateMETModule('wCands','PATMuonNuPairProducer','cleanPatMuons','systematicsMET','patJetsForAnalysis',1,9999,'AtLeastOneWCandidate',genParticles="genDaughters")
 #MNJanalysisConfigurator.addSelector('wCandsTight','PATMuonNuPairSelector',munuTight,'tightID',1)
 MNJanalysisConfigurator.addSelector('wCandsKIN','PATMuonNuPairSelector',munuKIN,'wCandsKIN',1)
 MNJanalysisConfigurator.addSelector('wCandsSel','PATMuonNuPairSelector',munuSel,'wCandsSel',1)
 
-MNJanalysisConfigurator.addDiCandidateModule('diMuons','PATMuPairProducer', 'cleanPatMuons','cleanPatMuons','systematicsMET','cleanPatJets',0,9999,text = '',dR=0.5,recoMode = "")
+MNJanalysisConfigurator.addDiCandidateModule('diMuons','PATMuPairProducer', 'cleanPatMuons','cleanPatMuons','systematicsMET','patJetsForAnalysis',0,9999,text = '',dR=0.5,recoMode = "")
 MNJanalysisConfigurator.addSelector('diMuonsSel','PATMuPairSelector',DiMuonPreSel+'&&'+DiMuonPreSel2+'&&'+DiMuonPreSel3,'diMuonSel',0,999)
 MNJanalysisConfigurator.addSorter('diMuonsSorted','PATMuPairSorter')
 
@@ -54,12 +54,12 @@ ENJanalysisConfigurator = CutSequenceProducer(initialCounter  = 'initialEventsEN
                                   pyModuleName = __name__,                                  pyNameSpace  = locals())
 
 #Make Di Muons to VETO DY
-ENJanalysisConfigurator.addDiCandidateModule('diElecs','PATElePairProducer', 'cleanPatElectrons','cleanPatElectrons','systematicsMET','cleanPatJets',0,9999,text = '',dR=0.5,recoMode = "")
+ENJanalysisConfigurator.addDiCandidateModule('diElecs','PATElePairProducer', 'cleanPatElectrons','cleanPatElectrons','systematicsMET','patJetsForAnalysis',0,9999,text = '',dR=0.5,recoMode = "")
 ENJanalysisConfigurator.addSelector('diElecsSel','PATElePairSelector',DiElePreSel+'&&'+DiElePreSel2+'&&'+DiElePreSel3,'diElecsSel',0,9999)
 ENJanalysisConfigurator.addSorter('diElecsSorted','PATElePairSorter')
 
 #Make Elecs+MET
-ENJanalysisConfigurator.addCandidateMETModule('wCandsEle','PATElectronNuPairProducer','cleanPatElectrons','systematicsMET','cleanPatJets',1,9999,'AtLeastOneWCandidateELE',genParticles="genDaughters")
+ENJanalysisConfigurator.addCandidateMETModule('wCandsEle','PATElectronNuPairProducer','cleanPatElectrons','systematicsMET','patJetsForAnalysis',1,9999,'AtLeastOneWCandidateELE',genParticles="genDaughters")
 ENJanalysisConfigurator.addSelector('wCandsKINEle','PATElectronNuPairSelector',elenuKIN,'wCandsKINEle',1)
 ENJanalysisConfigurator.addSelector('wCandsSelEle','PATElectronNuPairSelector',elenuSel,'wCandsSelEle',1)
 

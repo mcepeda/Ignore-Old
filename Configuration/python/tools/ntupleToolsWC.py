@@ -209,23 +209,33 @@ def addMuNuJetSimpleEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSo
                                     src        = cms.InputTag(src),
                                     tag        = cms.string("nCands"),
                               ),
+                              eleSize1 = cms.PSet(
+                                    pluginType = cms.string("CollectionSizeFiller"),
+                                    src        = cms.InputTag("vetoPatElectrons10"),
+                                    tag        = cms.string("electronsLoose10"), # Number of Electrons (WP95 & Iso)in the event
+                              ),
+                              eleSize2 = cms.PSet(
+                                    pluginType = cms.string("CollectionSizeFiller"),
+                                    src        = cms.InputTag("vetoPatElectrons20"),
+                                    tag        = cms.string("electronsLoose20"), # Number of Electrons (WP95 & Iso)in the event
+                              ),
                               nJetsSize = cms.PSet(
                                   pluginType = cms.string("PATMuonNuPairJetCountFiller"),
                                   src        = cms.InputTag(src),
                                   tag        = cms.string("nJets"),
-                                  method     = cms.string('pt()>30 && abs(eta())<2.1'),
+                                  method     = cms.string('pt()>30 && abs(eta())<2.4'),
                               ),
                               nJetsSize2 = cms.PSet(
                                   pluginType = cms.string("PATMuonNuPairJetCountFiller"),
                                   src        = cms.InputTag(src),
                                   tag        = cms.string("nJets20"),
-				  method= cms.string('pt()>20 && abs(eta())<2.1'),
+				  method= cms.string('pt()>20 && abs(eta())<2.4'),
                               ),
                               nJetsSize3 = cms.PSet(
                                   pluginType = cms.string("PATMuonNuPairJetCountFiller"),
                                   src        = cms.InputTag(src),
                                   tag        = cms.string("nJets40Eta21"),
-                                  method     = cms.string('pt()>40 && abs(eta())<2.1'),
+                                  method     = cms.string('pt()>40 && abs(eta())<2.4'),
                               ),
                               nMuonsSize = cms.PSet(
                                   pluginType = cms.string("CollectionSizeFiller"),
@@ -244,63 +254,63 @@ def addMuNuJetSimpleEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSo
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetpt"),
 				    method     = cms.string("pt()"),
-				    leadingOnly=cms.untracked.bool(False)		
+				    leadingOnly=cms.untracked.bool(True)		
                               ),
                               jetenergy1 = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetenergy"),
                                     method     = cms.string("energy()"),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
                               ),
                               jetcharge1 = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetcharge"),
                                     method     = cms.string("charge()"),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
                               ),
                               jeteta1 = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jeteta"),
                                     method     = cms.string("eta()"),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
                               ),
                               jetphi1 = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetphi"),
                                     method     = cms.string("phi()"),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
                               ),
                               jetBTagALLHP = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetBTagHP"),
                                     method     = cms.string('bDiscriminator("simpleSecondaryVertexHighPurBJetTags")'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
                               ),
                               jetBTagALL2 = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetBTagSecondSV2"),
                                     method     = cms.string('userFloat("btagSSVHE2")'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
                               ),
                               jetBTagSSVMASS = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetBTagSVVMASS"),
-                                    method     = cms.string('userFloat("massSSV")'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    method     = cms.string('userFloat("mass_SSV")'),
+                                    leadingOnly=cms.untracked.bool(True)
                               ),
                               jetBTagSSVMASSNEG = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetBTagSVVMASSNEG"),
-                                    method     = cms.string('userFloat("massSSVNEG")'),
-                                        leadingOnly=cms.untracked.bool(False)
+                                    method     = cms.string('userFloat("mass_SSVNEG")'),
+                                        leadingOnly=cms.untracked.bool(True)
                               ),
 
                               jetBTagFlightDistance = cms.PSet(
@@ -308,70 +318,70 @@ def addMuNuJetSimpleEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSo
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("flightDistance"),
                                     method     = cms.string('userFloat("flightDistance")'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
                               ),
                               jetBTagFlightDistanceError = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("errorFlightDistance"),
                                     method     = cms.string("userFloat('errorFlightDistance')"),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
                               ),
                               jetBTagFlightDistanceErrorNEG = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("errorFlightDistanceNEG"),
                                     method     = cms.string("userFloat('errorFlightDistanceNEG')"),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
                               ),
                               jetBTagnTracksSSV = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("numberOfTracksSSV"),
                                     method     = cms.string("userFloat('nTracksSSV')"),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
                               ),
                               jetBTagNSV = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("numberOfSSV"),
-                                    method     = cms.string("userFloat('nSSV')"),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    method     = cms.string("userFloat('nNegativeSSV')"),
+                                    leadingOnly=cms.untracked.bool(True)
                               ),
                               jetBTagNNSV = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("numberOfNegativeSSV"),
-                                    method     = cms.string("userFloat('nNegativeSSV')"),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    method     = cms.string("userFloat('nSSV')"),
+                                    leadingOnly=cms.untracked.bool(True)
                               ),
                               chargeSSV = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("chargeSSV"),
                                     method     = cms.string("userFloat('chargeSSV')"),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
                               ),
                              chargeSSVNEG = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("chargeSSVNEG"),
                                     method     = cms.string("userFloat('chargeSSVNEG')"),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
                               ),
                               jetBTagNegALL = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetBTagNeg"),
                                     method     = cms.string("userFloat('btagNEGSSVHE')"),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
                               ),
                               jetBTagNegFlightDistance = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("flightDistanceNEG"),
                                     method     = cms.string('userFloat("flightDistanceNEG")'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
 
                               ),
                               jetBTagNegnTracksSSV = cms.PSet(
@@ -379,7 +389,7 @@ def addMuNuJetSimpleEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSo
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("numberOfTracksNEGSSV"),
                                     method     = cms.string("userFloat('nTracksNEGSSV')"),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
 
                               ),
                               jetBTag1b = cms.PSet(
@@ -387,7 +397,7 @@ def addMuNuJetSimpleEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSo
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetBTag_TCHE"),
                                     method     = cms.string('bDiscriminator("trackCountingHighEffBJetTags")'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
 
                               ),
                               jetBTagControl = cms.PSet(
@@ -395,7 +405,7 @@ def addMuNuJetSimpleEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSo
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetBTag"),
                                     method     = cms.string('bDiscriminator("simpleSecondaryVertexHighEffBJetTags")'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
 
                               ),
                               jetBTag1c = cms.PSet(
@@ -403,7 +413,7 @@ def addMuNuJetSimpleEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSo
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetBTag_TCHP"),
                                     method     = cms.string('bDiscriminator("trackCountingHighPurBJetTags")'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
 
                               ),
 
@@ -412,16 +422,26 @@ def addMuNuJetSimpleEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSo
                                   src        = cms.InputTag(srcJets),
                                   tag        = cms.string("jetPartonFlavour"),
                                   method     = cms.string('partonFlavour()'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
                               ),
 
+                        genID2 = cms.PSet(
+                                pluginType = cms.string("GenID2"),
+                                src        = cms.InputTag("genParticles"),
+                                verbose    = cms.untracked.bool(True),
+                                saveCs    = cms.untracked.bool(True),
+			        ptMin    = cms.untracked.double(0),
+                                etaMax    = cms.untracked.double(5),
+
+
+                        ),
 
                               jetSecondMuon = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetSecondMuonPt"),
                                     method     = cms.string('userFloat("MuonInJetPt")'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
 
                               ),
                               jetSecondMuonPhi = cms.PSet(
@@ -429,7 +449,7 @@ def addMuNuJetSimpleEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSo
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetSecondMuonPhi"),
                                     method     = cms.string('userFloat("MuonInJetPhi")'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
 
                               ),
 
@@ -439,7 +459,7 @@ def addMuNuJetSimpleEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSo
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetSecondMuonEta"),
                                     method     = cms.string('userFloat("MuonInJetEta")'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
 
                               ),
 
@@ -448,7 +468,7 @@ def addMuNuJetSimpleEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSo
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetSecondMuonPtRel"),
                                     method     = cms.string('userFloat("MuonInJetPtRel")'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
 
                               ),
 
@@ -457,7 +477,7 @@ def addMuNuJetSimpleEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSo
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetSecondMuonDXYERR"),
                                     method     = cms.string('userFloat("MuonInJetDXYERR")'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
 
                               ),
 
@@ -466,7 +486,7 @@ def addMuNuJetSimpleEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSo
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetSecondMuonDZERR"),
                                     method     = cms.string('userFloat("MuonInJetDZERR")'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
 
                               ),
 
@@ -476,7 +496,7 @@ def addMuNuJetSimpleEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSo
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetSecondMuonIsoABS"),
                                     method     = cms.string('userFloat("MuonInJetIsoABS")'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
 
                               ),
 
@@ -486,7 +506,7 @@ def addMuNuJetSimpleEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSo
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetMuonEnergy"),
 				    method     = cms.string(" muonEnergy"),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
 
 				),
                               jetMuonMultiplicity = cms.PSet(
@@ -494,7 +514,7 @@ def addMuNuJetSimpleEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSo
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetMuonMultiplicity"),
                                     method     = cms.string("muonMultiplicity()"),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
 
 				),
                               jetElectronEnergy = cms.PSet(
@@ -502,7 +522,7 @@ def addMuNuJetSimpleEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSo
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetElectronEnergy"),
                                     method     = cms.string("electronEnergy()"),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
 
                                 ),
                               jetElectronMultiplicity = cms.PSet(
@@ -510,7 +530,7 @@ def addMuNuJetSimpleEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSo
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetElectronMultiplicity"),
                                     method     = cms.string("electronMultiplicity()"),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
 
                                 ),
 
@@ -523,26 +543,51 @@ def addMuNuJetSimpleEventTree(process,name,src = 'wCandsSel', srcLL = 'diMuonsSo
                         src        = cms.InputTag("genParticles"),
                 ),
 
-		genID2=cms.PSet(
+		genID3=cms.PSet(
 			pluginType = cms.string("PATJetFiller"),
 			 src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetFlavour"),
                                     method     = cms.string("partonFlavour()"),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
                                 ),
 
-                genID3=cms.PSet(
-                        pluginType = cms.string("PartonJetID"),
-                         src        = cms.InputTag("ak5PartonJets"),
-			 ptMin      = cms.double(10),
-			 etaMax     = cms.double(2.5)
-                                ),
+#                genID3=cms.PSet(
+#                        pluginType = cms.string("PartonJetID"),
+#                         src        = cms.InputTag("ak5PartonJets"),
+#			 ptMin      = cms.double(10),
+#			 etaMax     = cms.double(2.5)
+#                                ),
 
                               pu = cms.PSet(
                                   pluginType = cms.string("PUFiller"),
                                   src        = cms.InputTag("addPileupInfo"),
                                   tag        = cms.string("pu"),
                                   ),
+                              check= cms.PSet(
+                                    pluginType=cms.string("FindResonances"),
+                                    src       = cms.InputTag("patJetsForAnalysis"),
+                                    srcPrimaryVertices=cms.InputTag("primaryVertexFilter"),
+                                    verbose   =cms.untracked.bool(True),
+                                    jetindex=cms.int32(0)
+                                ),
+
+                               check2= cms.PSet(
+                                    pluginType=cms.string("MatchJetWithVertex"),
+                                    src       = cms.InputTag("patJetsForAnalysis"),
+                                    srcPrimaryVertices=cms.InputTag("primaryVertexFilter"),
+                                    verbose   =cms.untracked.bool(False),
+                                    jetindex=cms.int32(0),
+                                    tag = cms.string("jetDXYToPV")
+
+                                ),
+
+
+                               check3= cms.PSet(
+                                    pluginType=cms.string("GenDecayModes"),
+                                src        = cms.InputTag("genParticles"),
+
+                                    verbose   =cms.untracked.bool(True),
+                                ),
 
    )
 
@@ -897,39 +942,39 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                   pluginType = cms.string("PATElectronNuPairJetCountFiller"),
                                   src        = cms.InputTag(src),
                                   tag        = cms.string("nJets"),
-                                  method     = cms.string('pt()>30 && abs(eta)<2.1'),
+                                  method     = cms.string('pt()>30 && abs(eta)<2.4'),
                               ),
                               nJetsSize2 = cms.PSet(
                                   pluginType = cms.string("PATElectronNuPairJetCountFiller"),
                                   src        = cms.InputTag(src),
                                   tag        = cms.string("nJets20"),
-				  method= cms.string('pt()>20 && abs(eta)<2.1'),
+				  method= cms.string('pt()>20 && abs(eta)<2.4'),
                               ),
                               nJetsSize3 = cms.PSet(
                                   pluginType = cms.string("PATElectronNuPairJetCountFiller"),
                                   src        = cms.InputTag(src),
                                   tag        = cms.string("nJets40Eta21"),
-                                  method= cms.string('pt()>40 && abs(eta)<2.1'),
+                                  method= cms.string('pt()>40 && abs(eta)<2.4'),
                               ),
                               nJetsSizeSSV = cms.PSet(
                                   pluginType = cms.string("PATElectronNuPairJetCountFiller"),
                                   src        = cms.InputTag(src),
                                   tag        = cms.string("nJetsBTAGSSV"),
-                                  method     = cms.string('pt()>30 && abs(eta)<2.1&&bDiscriminator("simpleSecondaryVertexHighEffBJetTags")>1.19'),
+                                  method     = cms.string('pt()>30 && abs(eta)<2.4&&bDiscriminator("simpleSecondaryVertexHighEffBJetTags")>1.19'),
                               ),
                               jetpt1 = cms.PSet( 
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetpt"),
                                     method     = cms.string("pt()"), 
-  					leadingOnly=cms.untracked.bool(False) 
+  					leadingOnly=cms.untracked.bool(True) 
                               ),
                               jetenergy1 = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetenergy"),
                                     method     = cms.string("energy()"),
-                                        leadingOnly=cms.untracked.bool(False)
+                                        leadingOnly=cms.untracked.bool(True)
 
                               ),
                               jetcharge1 = cms.PSet(
@@ -937,7 +982,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetcharge"),
                                     method     = cms.string("charge()"),
-                                        leadingOnly=cms.untracked.bool(False)
+                                        leadingOnly=cms.untracked.bool(True)
 
                               ),
                               jeteta1 = cms.PSet(
@@ -945,7 +990,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jeteta"),
                                     method     = cms.string("eta()"),
-                                        leadingOnly=cms.untracked.bool(False)
+                                        leadingOnly=cms.untracked.bool(True)
 
                               ),
                               jetphi1 = cms.PSet(
@@ -953,7 +998,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetphi"),
                                     method     = cms.string("phi()"),
-                                        leadingOnly=cms.untracked.bool(False)
+                                        leadingOnly=cms.untracked.bool(True)
 
                               ),
 
@@ -962,7 +1007,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetBTag"),
                                     method     = cms.string("userFloat('btagSSVHE')"),
-                                        leadingOnly=cms.untracked.bool(False)
+                                        leadingOnly=cms.untracked.bool(True)
 
                               ),
                               jetBTagALLHP = cms.PSet(
@@ -970,7 +1015,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetBTagHP"),
                                     method     = cms.string('userFloat("btagSSVHP")'),
-                                        leadingOnly=cms.untracked.bool(False)
+                                        leadingOnly=cms.untracked.bool(True)
 
                               ),
                               jetBTagALL2 = cms.PSet(
@@ -978,30 +1023,140 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetBTagSV2"),
                                     method     = cms.string('userFloat("btagSSVHE2")'),
-                                        leadingOnly=cms.untracked.bool(False)
+                                        leadingOnly=cms.untracked.bool(True)
 
                               ),
                               jetBTagSSVMASS = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetBTagSVVMASS"),
-                                    method     = cms.string('userFloat("massSSV")'),
-                                        leadingOnly=cms.untracked.bool(False)
+                                    method     = cms.string('userFloat("mass_SSV")'),
+                                        leadingOnly=cms.untracked.bool(True)
                               ),
                               jetBTagSSVMASSNEG = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetBTagSVVMASSNEG"),
-                                    method     = cms.string('userFloat("massSSVNEG")'),
-                                        leadingOnly=cms.untracked.bool(False)
+                                    method     = cms.string('userFloat("mass_SSVNEG")'),
+                                        leadingOnly=cms.untracked.bool(True)
                               ),
+
+
+                            jetBTagTRACK1 = cms.PSet(
+                                    pluginType = cms.string("PATJetFiller"),
+                                    src        = cms.InputTag(srcJets),
+                                    tag        = cms.string("jetBTag_SVV_track1_px"),
+                                    method     = cms.string('userFloat("SSV_track1_px")'),
+                                        leadingOnly=cms.untracked.bool(True)
+                              ),
+                            jetBTagTRACK1_py = cms.PSet(
+                                    pluginType = cms.string("PATJetFiller"),
+                                    src        = cms.InputTag(srcJets),
+                                    tag        = cms.string("jetBTag_SVV_track1_py"),
+                                    method     = cms.string('userFloat("SSV_track1_py")'),
+                                        leadingOnly=cms.untracked.bool(True)
+                              ),
+                            jetBTagTRACK1_pz = cms.PSet(
+                                    pluginType = cms.string("PATJetFiller"),
+                                    src        = cms.InputTag(srcJets),
+                                    tag        = cms.string("jetBTag_SVV_track1_pz"),
+                                    method     = cms.string('userFloat("SSV_track1_pz")'),
+                                        leadingOnly=cms.untracked.bool(True)
+                              ),
+                            jetBTagTRACK1_charge = cms.PSet(
+                                    pluginType = cms.string("PATJetFiller"),
+                                    src        = cms.InputTag(srcJets),
+                                    tag        = cms.string("jetBTag_SVV_track1_charge"),
+                                    method     = cms.string('userFloat("SSV_track1_charge")'),
+                                        leadingOnly=cms.untracked.bool(True)
+                              ),
+
+
+                            jetBTagTRACK2 = cms.PSet(
+                                    pluginType = cms.string("PATJetFiller"),
+                                    src        = cms.InputTag(srcJets),
+                                    tag        = cms.string("jetBTag_SVV_track2_px"),
+                                    method     = cms.string('userFloat("SSV_track2_px")'),
+                                        leadingOnly=cms.untracked.bool(True)
+                              ),
+                            jetBTagTRACK2_py = cms.PSet(
+                                    pluginType = cms.string("PATJetFiller"),
+                                    src        = cms.InputTag(srcJets),
+                                    tag        = cms.string("jetBTag_SVV_track2_py"),
+                                    method     = cms.string('userFloat("SSV_track2_py")'),
+                                        leadingOnly=cms.untracked.bool(True)
+                              ),
+                            jetBTagTRACK2_pz = cms.PSet(
+                                    pluginType = cms.string("PATJetFiller"),
+                                    src        = cms.InputTag(srcJets),
+                                    tag        = cms.string("jetBTag_SVV_track2_pz"),
+                                    method     = cms.string('userFloat("SSV_track2_pz")'),
+                                        leadingOnly=cms.untracked.bool(True)
+                              ),
+                            jetBTagTRACK2_charge = cms.PSet(
+                                    pluginType = cms.string("PATJetFiller"),
+                                    src        = cms.InputTag(srcJets),
+                                    tag        = cms.string("jetBTag_SVV_track2_charge"),
+                                    method     = cms.string('userFloat("SSV_track2_charge")'),
+                                        leadingOnly=cms.untracked.bool(True)
+                              ),
+
+
+                            jetBTagTRACK3 = cms.PSet(
+                                    pluginType = cms.string("PATJetFiller"),
+                                    src        = cms.InputTag(srcJets),
+                                    tag        = cms.string("jetBTag_SVV_track3_px"),
+                                    method     = cms.string('userFloat("SSV_track3_px")'),
+                                        leadingOnly=cms.untracked.bool(True)
+                              ),
+                            jetBTagTRACK3_py = cms.PSet(
+                                    pluginType = cms.string("PATJetFiller"),
+                                    src        = cms.InputTag(srcJets),
+                                    tag        = cms.string("jetBTag_SVV_track3_py"),
+                                    method     = cms.string('userFloat("SSV_track3_py")'),
+                                        leadingOnly=cms.untracked.bool(True)
+                              ),
+                            jetBTagTRACK3_pz = cms.PSet(
+                                    pluginType = cms.string("PATJetFiller"),
+                                    src        = cms.InputTag(srcJets),
+                                    tag        = cms.string("jetBTag_SVV_track3_pz"),
+                                    method     = cms.string('userFloat("SSV_track3_pz")'),
+                                        leadingOnly=cms.untracked.bool(True)
+                              ),
+                            jetBTagTRACK3_charge = cms.PSet(
+                                    pluginType = cms.string("PATJetFiller"),
+                                    src        = cms.InputTag(srcJets),
+                                    tag        = cms.string("jetBTag_SVV_track3_charge"),
+                                    method     = cms.string('userFloat("SSV_track3_charge")'),
+                                        leadingOnly=cms.untracked.bool(True)
+                              ),
+
+
+                              jetBTagSSVMASSD0D0 = cms.PSet(
+                                    pluginType = cms.string("PATJetFiller"),
+                                    src        = cms.InputTag(srcJets),
+                                    tag        = cms.string("jetBTagSVVMASSD0"),
+                                    method     = cms.string('userFloat("massD0_SSV")'),
+                                    leadingOnly=cms.untracked.bool(True)
+                              ),
+                              jetBTagSSVMASSD0NEG = cms.PSet(
+                                    pluginType = cms.string("PATJetFiller"),
+                                    src        = cms.InputTag(srcJets),
+                                    tag        = cms.string("jetBTagSVVMASSD0NEG"),
+                                    method     = cms.string('userFloat("massD0_SSVNEG")'),
+                                        leadingOnly=cms.untracked.bool(True)
+                              ),
+
+
+
+
 
                               jetBTagFlightDistance = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("flightDistance"),
                                     method     = cms.string('userFloat("flightDistance")'),
-                                        leadingOnly=cms.untracked.bool(False)
+                                        leadingOnly=cms.untracked.bool(True)
 
                               ),
 
@@ -1010,7 +1165,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("errorFlightDistance"),
                                     method     = cms.string("userFloat('errorFlightDistance')"),
-                                        leadingOnly=cms.untracked.bool(False)
+                                        leadingOnly=cms.untracked.bool(True)
 
                               ),
                               jetBTagFlightDistanceErrorNEG = cms.PSet(
@@ -1018,7 +1173,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("errorFlightDistanceNEG"),
                                     method     = cms.string("userFloat('errorFlightDistanceNEG')"),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
                               ),
 
                               jetBTagnTracksSSV = cms.PSet(
@@ -1026,7 +1181,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("numberOfTracksSSV"),
                                     method     = cms.string("userFloat('nTracksSSV')"),
-                                        leadingOnly=cms.untracked.bool(False)
+                                        leadingOnly=cms.untracked.bool(True)
 
                               ),
 
@@ -1034,16 +1189,16 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("numberOfSSV"),
-                                    method     = cms.string("userFloat('nSSV')"),
-                                        leadingOnly=cms.untracked.bool(False)
+                                    method     = cms.string("userFloat('nNegativeSSV')"),
+                                        leadingOnly=cms.untracked.bool(True)
 
                               ),
                               jetBTagNNSV = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("numberOfNegativeSSV"),
-                                    method     = cms.string("userFloat('nNegativeSSV')"),
-                                        leadingOnly=cms.untracked.bool(False)
+                                    method     = cms.string("userFloat('nSSV')"),
+                                        leadingOnly=cms.untracked.bool(True)
 
                               ),
                               jetBTagNegALL = cms.PSet(
@@ -1051,7 +1206,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetBTagNeg"),
                                     method     = cms.string("userFloat('btagNEGSSVHE')"),
-                                        leadingOnly=cms.untracked.bool(False)
+                                        leadingOnly=cms.untracked.bool(True)
 
                               ),
                               jetBTagNegFlightDistance = cms.PSet(
@@ -1059,7 +1214,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("flightDistanceNEG"),
                                     method     = cms.string('userFloat("flightDistanceNEG")'),
-                                        leadingOnly=cms.untracked.bool(False)
+                                        leadingOnly=cms.untracked.bool(True)
 
                               ),
                               jetBTagNegnTracksSSV = cms.PSet(
@@ -1067,7 +1222,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("numberOfTracksNEGSSV"),
                                     method     = cms.string("userFloat('nTracksNEGSSV')"),
-                                        leadingOnly=cms.untracked.bool(False)
+                                        leadingOnly=cms.untracked.bool(True)
 
                               ),
                               jetBTag1b = cms.PSet(
@@ -1075,7 +1230,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetBTag_TCHE"),
                                     method     = cms.string('bDiscriminator("trackCountingHighEffBJetTags")'),
-                                        leadingOnly=cms.untracked.bool(False)
+                                        leadingOnly=cms.untracked.bool(True)
 
                               ),
 
@@ -1084,7 +1239,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetBTag_TCHP"),
                                     method     = cms.string('bDiscriminator("trackCountingHighPurBJetTags")'),
-                                        leadingOnly=cms.untracked.bool(False)
+                                        leadingOnly=cms.untracked.bool(True)
                               ),
                               nElectronsSize = cms.PSet(
                                   pluginType = cms.string("CollectionSizeFiller"),
@@ -1096,7 +1251,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetSecondElectronPt"),
                                     method     = cms.string('userFloat("ElectronInJetPt")'),
-                                        leadingOnly=cms.untracked.bool(False)
+                                        leadingOnly=cms.untracked.bool(True)
 
                               ),
                               jetSecondElectronPtRel = cms.PSet(
@@ -1104,7 +1259,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetSecondElectronPtRel"),
                                     method     = cms.string('userFloat("ElectronInJetPtRel")'),
-                                        leadingOnly=cms.untracked.bool(False)
+                                        leadingOnly=cms.untracked.bool(True)
 
                               ),
                               jetElectronEnergy = cms.PSet(
@@ -1112,7 +1267,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetElectronEnergy"),
                                     method     = cms.string("electronEnergy()"),
-                                        leadingOnly=cms.untracked.bool(False)
+                                        leadingOnly=cms.untracked.bool(True)
 
                                 ),
                               jetElectronMultiplicity = cms.PSet(
@@ -1120,7 +1275,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetElectronMultiplicity"),
                                     method     = cms.string("electronMultiplicity()"),
-                                        leadingOnly=cms.untracked.bool(False)
+                                        leadingOnly=cms.untracked.bool(True)
 
                                 ),
                               jetSecondMuon = cms.PSet(
@@ -1128,7 +1283,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetSecondMuonPt"),
                                     method     = cms.string('userFloat("MuonInJetPt")'),
-                                        leadingOnly=cms.untracked.bool(False)
+                                        leadingOnly=cms.untracked.bool(True)
 
                               ),
                               jetSecondMuonPtRel = cms.PSet(
@@ -1136,7 +1291,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetSecondMuonPtRel"),
                                     method     = cms.string('userFloat("MuonInJetPtRel")'),
-                                        leadingOnly=cms.untracked.bool(False)
+                                        leadingOnly=cms.untracked.bool(True)
                               ),
 
                               jetSecondMuonPhi = cms.PSet(
@@ -1144,7 +1299,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetSecondMuonPhi"),
                                     method     = cms.string('userFloat("MuonInJetPhi")'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
 
                               ),
 
@@ -1154,7 +1309,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetSecondMuonEta"),
                                     method     = cms.string('userFloat("MuonInJetEta")'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
 
                               ),
 
@@ -1163,7 +1318,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetSecondMuonDXYERR"),
                                     method     = cms.string('userFloat("MuonInJetDXYERR")'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
 
                               ),
 
@@ -1172,7 +1327,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetSecondMuonDZERR"),
                                     method     = cms.string('userFloat("MuonInJetDZERR")'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
 
                               ),
 
@@ -1181,7 +1336,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetMuonEnergy"),
                                     method     = cms.string(" muonEnergy"),
-                                        leadingOnly=cms.untracked.bool(False)
+                                        leadingOnly=cms.untracked.bool(True)
 
                                 ),
                               jetMuonMultiplicity = cms.PSet(
@@ -1189,7 +1344,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetMuonMultiplicity"),
                                     method     = cms.string("muonMultiplicity()"),
-                                        leadingOnly=cms.untracked.bool(False)
+                                        leadingOnly=cms.untracked.bool(True)
 
                                 ),
 
@@ -1198,7 +1353,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetSecondMuonDXY"),
                                     method     = cms.string('userFloat("MuonInJetDXY")'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
 
                               ),
 
@@ -1207,7 +1362,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetSecondMuonDZ"),
                                     method     = cms.string('userFloat("MuonInJetDZ")'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
 
                               ),
 
@@ -1217,7 +1372,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetSecondMuonIsoABS"),
                                     method     = cms.string('userFloat("MuonInJetIsoABS")'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
 
                               ),
 
@@ -1226,7 +1381,7 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                   src        = cms.InputTag(srcJets),
                                   tag        = cms.string("jetPartonFlavour"),
                                   method     = cms.string('partonFlavour()'),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
                               ),
 
                              genWeights = cms.PSet(
@@ -1243,15 +1398,21 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                          src        = cms.InputTag(srcJets),
                                     tag        = cms.string("jetFlavour"),
                                     method     = cms.string("partonFlavour()"),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
                                 ),
 
-               genID3=cms.PSet(
-                        pluginType = cms.string("PartonJetID"),
-                         src        = cms.InputTag("ak5PartonJets"),
-                         ptMin      = cms.double(10),
-                         etaMax     = cms.double(2.5)
-                                ),
+                        genID3 = cms.PSet(
+                                pluginType = cms.string("GenID2"),
+                                src        = cms.InputTag("genParticles"),
+                                verbose    = cms.untracked.bool(True),
+                                saveCs    = cms.untracked.bool(True),
+                                ptMin    = cms.untracked.double(0),
+                                etaMax    = cms.untracked.double(5),
+
+                        ),
+
+
+
                               metphiCor = cms.PSet(
                                     pluginType = cms.string("PATElectronNuPairFiller"),
                                     src        = cms.InputTag(src),
@@ -1282,15 +1443,52 @@ def addEleNuJetSimpleEventTree(process,name,src = 'wCandsSelEle', srcLL = 'diEle
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("chargeSSV"),
                                     method     = cms.string("userFloat('chargeSSV')"),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
                               ),
                              chargeSSVNEG = cms.PSet(
                                     pluginType = cms.string("PATJetFiller"),
                                     src        = cms.InputTag(srcJets),
                                     tag        = cms.string("chargeSSVNEG"),
                                     method     = cms.string("userFloat('chargeSSVNEG')"),
-                                    leadingOnly=cms.untracked.bool(False)
+                                    leadingOnly=cms.untracked.bool(True)
                               ),
+
+                              muSize1 = cms.PSet(
+                                    pluginType = cms.string("CollectionSizeFiller"),
+                                    src        = cms.InputTag("vetoPatMuons10"),
+                                    tag        = cms.string("muonsLoose10"), # Number of Muons (WP95 & Iso)in the event
+                              ),
+                              muSize2 = cms.PSet(
+                                    pluginType = cms.string("CollectionSizeFiller"),
+                                    src        = cms.InputTag("vetoPatMuons20"),
+                                    tag        = cms.string("muonsLoose20"), # Number of Muons (WP95 & Iso)in the event
+                              ),
+
+			      	
+			      check= cms.PSet(
+				    pluginType=cms.string("FindResonances"),
+				    src       = cms.InputTag("patJetsForAnalysis"),
+				    srcPrimaryVertices=cms.InputTag("primaryVertexFilter"),
+				    verbose   =cms.untracked.bool(True),
+                                    jetindex=cms.int32(0)
+				),
+
+
+			       check2= cms.PSet(
+                                    pluginType=cms.string("MatchJetWithVertex"),
+                                    src       = cms.InputTag("patJetsForAnalysis"),
+                                    srcPrimaryVertices=cms.InputTag("primaryVertexFilter"),
+                                    verbose   =cms.untracked.bool(True),
+                                    jetindex=cms.int32(0),
+				    tag = cms.string("jetDXYToPV")
+                                ),
+
+                               check3= cms.PSet(
+                                    pluginType=cms.string("GenDecayModes"),
+                                    verbose   =cms.untracked.bool(True),
+                                src        = cms.InputTag("genParticles"),
+
+                                ),
 
 
    )
